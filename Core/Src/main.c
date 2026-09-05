@@ -42,7 +42,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint32_t pasos=0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -54,6 +54,103 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+void delay_us_dwt_init()
+{
+	CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+    pasos=(HAL_RCC_GetSysClockFreq()/1000000);//le el cristal pasa a us
+
+}
+
+//retardo por debbuger
+void delay_us_dwt(uint32_t reta)
+{
+
+DWT->CYCCNT=0;
+while( DWT->CYCCNT<=pasos*reta);//multiplica por us
+}
+
+void Sound_play(uint32_t frec,uint32_t dura)
+{
+	uint32_t dela=500000/frec;//  la mitad de un mega
+	uint32_t  repe=frec*dura/1000;// calcula cuantas veces se repite
+
+		while(repe--)
+	  {
+	HAL_GPIO_WritePin(PAR_GPIO_Port, PAR_Pin,1);
+	delay_us_dwt(dela);
+	  HAL_GPIO_WritePin(PAR_GPIO_Port, PAR_Pin,0);
+	  delay_us_dwt(dela);
+      }
+
+}
+
+void zelda(void)
+{
+    // Melodía estilo Bosque Kokiri
+    Sound_play(659, 180);   // Mi5
+    Sound_play(784, 180);   // Sol5
+    Sound_play(988, 220);   // Si5
+    Sound_play(784, 180);   // Sol5
+    Sound_play(659, 180);   // Mi5
+
+    HAL_Delay(80);
+
+    Sound_play(587, 180);   // Re5
+    Sound_play(659, 180);   // Mi5
+    Sound_play(784, 220);   // Sol5
+    Sound_play(659, 180);   // Mi5
+    Sound_play(587, 180);   // Re5
+
+    HAL_Delay(80);
+
+    Sound_play(523, 180);   // Do5
+    Sound_play(587, 180);   // Re5
+    Sound_play(659, 220);   // Mi5
+    Sound_play(784, 220);   // Sol5
+    Sound_play(659, 180);   // Mi5
+
+    HAL_Delay(100);
+
+    Sound_play(523, 180);   // Do5
+    Sound_play(440, 180);   // La4
+    Sound_play(523, 220);   // Do5
+    Sound_play(659, 300);   // Mi5
+
+    HAL_Delay(150);
+
+    // Repetición
+    Sound_play(659, 180);
+    Sound_play(784, 180);
+    Sound_play(988, 220);
+    Sound_play(784, 180);
+    Sound_play(659, 180);
+
+    HAL_Delay(80);
+
+    Sound_play(587, 180);
+    Sound_play(659, 180);
+    Sound_play(784, 220);
+    Sound_play(659, 180);
+    Sound_play(587, 180);
+
+    HAL_Delay(80);
+
+    Sound_play(523, 180);
+    Sound_play(587, 180);
+    Sound_play(659, 220);
+    Sound_play(784, 220);
+    Sound_play(659, 180);
+
+    HAL_Delay(100);
+
+    Sound_play(523, 180);
+    Sound_play(440, 180);
+    Sound_play(523, 220);
+    Sound_play(659, 400);
+}
+
 void patron1()
 {
     HAL_GPIO_TogglePin(GPIOB, LED1_Pin);
@@ -77,7 +174,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+  delay_us_dwt_init();
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -107,7 +204,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    patron1();
+    zelda();
+    //zelda();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
