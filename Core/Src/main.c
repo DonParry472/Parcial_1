@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "stm32f4xx_hal.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -86,69 +87,135 @@ void Sound_play(uint32_t frec,uint32_t dura)
 
 }
 
-void zelda(void)
+void epona(void)
 {
-    // Melodía estilo Bosque Kokiri
-    Sound_play(659, 180);   // Mi5
-    Sound_play(784, 180);   // Sol5
-    Sound_play(988, 220);   // Si5
-    Sound_play(784, 180);   // Sol5
-    Sound_play(659, 180);   // Mi5
+    uint32_t duracion = 250;   // Duración de cada nota en ms
 
-    HAL_Delay(80);
+    uint16_t melodia[] =
+    {
+        1175, 988, 880, 1175, 988, 880, 1175, 988, 880,
+        988, 880, 740, 698, 740, 1109, 1175, 988, 1175,
+        1175, 1109, 988, 880,
 
-    Sound_play(587, 180);   // Re5
-    Sound_play(659, 180);   // Mi5
-    Sound_play(784, 220);   // Sol5
-    Sound_play(659, 180);   // Mi5
-    Sound_play(587, 180);   // Re5
+        1175, 988, 880, 1175, 988, 880, 1175, 988, 880,
+        988, 880, 740, 698, 740, 988, 1109, 1175, 1175,
+        1319, 1175,
 
-    HAL_Delay(80);
+        932, 932, 932, 932, 932, 1047,
+        932, 932, 880, 880, 1047, 698,
 
-    Sound_play(523, 180);   // Do5
-    Sound_play(587, 180);   // Re5
-    Sound_play(659, 220);   // Mi5
-    Sound_play(784, 220);   // Sol5
-    Sound_play(659, 180);   // Mi5
+        784, 784, 784, 784, 784,
+        880, 932, 880, 880, 880,
 
-    HAL_Delay(100);
+        932, 932, 932, 932, 932, 1047,
+        932, 932, 880, 880, 1047, 698,
 
-    Sound_play(523, 180);   // Do5
-    Sound_play(440, 180);   // La4
-    Sound_play(523, 220);   // Do5
-    Sound_play(659, 300);   // Mi5
+        784, 784, 784, 784, 784,
+        880, 932, 880, 880,
 
-    HAL_Delay(150);
+        1175, 988, 880, 1175, 988, 880, 1175, 988, 880,
+        988, 880, 740, 698, 740, 988, 1109, 1175,
+        1175, 1175, 1109, 988, 880,
 
-    // Repetición
-    Sound_play(659, 180);
-    Sound_play(784, 180);
-    Sound_play(988, 220);
-    Sound_play(784, 180);
-    Sound_play(659, 180);
+        1175, 988, 880, 1175, 988, 880, 1175, 988, 880,
+        988, 880, 740, 698, 740, 988, 1109, 1175,
+        1175, 1175, 1319, 1175
+    };
 
-    HAL_Delay(80);
+    uint32_t numero_notas = sizeof(melodia) / sizeof(melodia[0]);
 
-    Sound_play(587, 180);
-    Sound_play(659, 180);
-    Sound_play(784, 220);
-    Sound_play(659, 180);
-    Sound_play(587, 180);
+    for(uint32_t i = 0; i < numero_notas; i++)
+    {
+        Sound_play(melodia[i], duracion);
+    }
+}
 
-    HAL_Delay(80);
+void cielitolindo()
+{
+    // De la Sierra Morena
+    Sound_play(523, 350);   // DO5
+    Sound_play(523, 250);   // DO5
+    Sound_play(440, 250);   // LA4
+    Sound_play(494, 250);   // SI4
+    Sound_play(392, 400);   // SOL4
 
-    Sound_play(523, 180);
-    Sound_play(587, 180);
-    Sound_play(659, 220);
-    Sound_play(784, 220);
-    Sound_play(659, 180);
 
-    HAL_Delay(100);
+    // Cielito lindo vienen bajando
+    Sound_play(523, 250);   // DO5
+    Sound_play(523, 250);   // DO5
+    Sound_play(440, 250);   // LA4
+    Sound_play(494, 250);   // SI4
+    Sound_play(392, 500);   // SOL4
 
-    Sound_play(523, 180);
-    Sound_play(440, 180);
-    Sound_play(523, 220);
-    Sound_play(659, 400);
+
+    // Un par de ojitos negros
+    Sound_play(523, 250);   // DO5
+    Sound_play(523, 250);   // DO5
+    Sound_play(440, 350);   // LA4
+    Sound_play(494, 250);   // SI4
+    Sound_play(392, 250);   // SOL4
+    Sound_play(349, 250);   // FA4
+    Sound_play(294, 500);   // RE4
+
+
+    // Cielito lindo de contrabando
+    Sound_play(494, 250);   // SI4
+    Sound_play(494, 250);   // SI4
+    Sound_play(494, 250);   // SI4
+    Sound_play(494, 250);   // SI4
+    Sound_play(440, 250);   // LA4
+    Sound_play(349, 250);   // FA4
+    Sound_play(294, 250);   // RE4
+    Sound_play(294, 250);   // RE4
+    Sound_play(330, 250);   // MI4
+
+    Sound_play(349, 250);   // FA4
+    Sound_play(392, 250);   // SOL4
+    Sound_play(392, 250);   // SOL4
+    Sound_play(392, 250);   // SOL4
+    Sound_play(349, 250);   // FA4
+    Sound_play(330, 250);   // MI4
+    Sound_play(294, 250);   // RE4
+    Sound_play(262, 600);   // DO4
+
+
+    // ¡Ay, ay, ay, ay!
+    Sound_play(659, 500);   // MI5
+    Sound_play(587, 300);   // RE5
+    Sound_play(523, 250);   // DO5
+    Sound_play(440, 600);   // LA4
+
+
+    // Canta y no llores
+    Sound_play(587, 350);   // RE5
+    Sound_play(587, 200);   // RE5
+    Sound_play(523, 200);   // DO5
+    Sound_play(659, 300);   // MI5
+    Sound_play(523, 500);   // DO5
+
+
+    // Porque cantando se alegran
+    Sound_play(392, 250);   // SOL4
+    Sound_play(440, 300);   // LA4
+    Sound_play(392, 250);   // SOL4
+    Sound_play(440, 250);   // LA4
+    Sound_play(440, 250);   // LA4
+    Sound_play(392, 250);   // SOL4
+    Sound_play(698, 300);   // FA5
+    Sound_play(698, 300);   // FA5
+
+
+    // Cielito lindo, los corazones
+    Sound_play(587, 350);   // RE5
+    Sound_play(494, 250);   // SI4
+    Sound_play(392, 250);   // SOL4
+    Sound_play(440, 300);   // LA4
+    Sound_play(440, 250);   // LA4
+    Sound_play(392, 250);   // SOL4
+    Sound_play(349, 250);   // FA4
+    Sound_play(330, 250);   // MI4
+    Sound_play(294, 250);   // RE4
+    Sound_play(262, 600);   // DO4
 }
 
 void patron1()
@@ -163,6 +230,90 @@ void patron1()
     HAL_Delay(100);
 }
 
+void patron2()
+{
+    HAL_GPIO_TogglePin(GPIOB, LED4_Pin);
+    HAL_Delay(100);
+    HAL_GPIO_TogglePin(GPIOB, LED3_Pin);
+    HAL_Delay(100);
+    HAL_GPIO_TogglePin(GPIOB, LED2_Pin);
+    HAL_Delay(100);
+    HAL_GPIO_TogglePin(GPIOB, LED1_Pin);
+    HAL_Delay(100);
+}
+
+ void patron3(int repeticiones)
+{
+    int contador = 0;
+
+    while (contador < repeticiones)
+    {
+        HAL_Delay(500);
+        HAL_GPIO_TogglePin(GPIOB, LED2_Pin);
+        HAL_Delay(500);
+
+        HAL_GPIO_TogglePin(GPIOB, LED4_Pin);
+        HAL_Delay(500);
+
+        HAL_GPIO_TogglePin(GPIOB, LED3_Pin);
+        HAL_Delay(500);
+
+        HAL_GPIO_TogglePin(GPIOB, LED1_Pin);
+        HAL_Delay(500);
+
+        contador++;
+    }
+}
+
+ void patron4(int velocidad, int repeticiones)
+  {
+    for (int i = 0; i < repeticiones; i++)
+    {
+        HAL_Delay(500)
+        HAL_GPIO_WritePin(GPIOB, LED4_Pin, GPIO_PIN_SET);
+        HAL_Delay(velocidad);
+        HAL_GPIO_WritePin(GPIOB, LED4_Pin, GPIO_PIN_RESET);
+
+        HAL_GPIO_WritePin(GPIOB, LED2_Pin, GPIO_PIN_SET);
+        HAL_Delay(velocidad);
+        HAL_GPIO_WritePin(GPIOB, LED2_Pin, GPIO_PIN_RESET);
+
+        HAL_GPIO_WritePin(GPIOB, LED3_Pin, GPIO_PIN_SET);
+        HAL_Delay(velocidad);
+        HAL_GPIO_WritePin(GPIOB, LED3_Pin, GPIO_PIN_RESET);
+
+        HAL_GPIO_WritePin(GPIOB, LED1_Pin, GPIO_PIN_SET);
+        HAL_Delay(velocidad);
+        HAL_GPIO_WritePin(GPIOB, LED1_Pin, GPIO_PIN_RESET);
+    }
+  }
+
+void suero(uint16_t t)
+{
+  GPIOA->ODR = 0b10010010;
+  HAL_Delay(t);
+  GPIOA->ODR = 0b11000001;
+  HAL_Delay(t);
+  GPIOA->ODR = 0b10000110;
+  HAL_Delay(t);
+  GPIOA->ODR = 0b10101111;
+  HAL_Delay(t);
+  GPIOA->ODR = 0b11000000;
+  HAL_Delay(t);
+}
+
+void fail()
+{
+  
+  GPIOA->ODR = 0x8E;
+  HAL_Delay(500);
+  GPIOA->ODR = 136;
+  HAL_Delay(500);
+  GPIOA->ODR = 0b11111001;
+  HAL_Delay(500);
+  GPIOA->ODR = 199;
+  HAL_Delay(500);
+}
 
 /* USER CODE END 0 */
 
@@ -198,14 +349,24 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
-
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  patron3(5);
+  HAL_Delay(500);
+  patron4(350, 5);
+
   while (1)
   {
     /* USER CODE END WHILE */
-    zelda();
-    //zelda();
+    suero(1000);
+    fail();
+    patron1();
+    HAL_Delay(500);
+    patron2();
+    HAL_Delay(500);
+    cielitolindo();
+    HAL_Delay(500);
+    epona();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
