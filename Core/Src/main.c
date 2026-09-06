@@ -269,7 +269,7 @@ void patron2()
   {
     for (int i = 0; i < repeticiones; i++)
     {
-        HAL_Delay(500)
+        HAL_Delay(500);
         HAL_GPIO_WritePin(GPIOB, LED4_Pin, GPIO_PIN_SET);
         HAL_Delay(velocidad);
         HAL_GPIO_WritePin(GPIOB, LED4_Pin, GPIO_PIN_RESET);
