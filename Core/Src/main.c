@@ -87,47 +87,77 @@ void Sound_play(uint32_t frec,uint32_t dura)
 
 }
 
-void epona(void)
+void tetris()
 {
-    uint32_t duracion = 250;   // Duración de cada nota en ms
+    // Frase 1
+    Sound_play(659, 300);  // MI5
+    Sound_play(494, 150);  // SI4
+    Sound_play(523, 150);  // DO5
+    Sound_play(587, 300);  // RE5
+    Sound_play(523, 150);  // DO5
+    Sound_play(494, 150);  // SI4
 
-    uint16_t melodia[] =
-    {
-        1175, 988, 880, 1175, 988, 880, 1175, 988, 880,
-        988, 880, 740, 698, 740, 1109, 1175, 988, 1175,
-        1175, 1109, 988, 880,
+    Sound_play(440, 300);  // LA4
+    Sound_play(440, 150);  // LA4
+    Sound_play(523, 150);  // DO5
+    Sound_play(659, 300);  // MI5
+    Sound_play(587, 150);  // RE5
+    Sound_play(523, 150);  // DO5
 
-        1175, 988, 880, 1175, 988, 880, 1175, 988, 880,
-        988, 880, 740, 698, 740, 988, 1109, 1175, 1175,
-        1319, 1175,
+    Sound_play(494, 300);  // SI4
+    Sound_play(523, 150);  // DO5
+    Sound_play(587, 300);  // RE5
+    Sound_play(659, 300);  // MI5
 
-        932, 932, 932, 932, 932, 1047,
-        932, 932, 880, 880, 1047, 698,
+    Sound_play(523, 300);  // DO5
+    Sound_play(440, 300);  // LA4
+    Sound_play(440, 600);  // LA4
 
-        784, 784, 784, 784, 784,
-        880, 932, 880, 880, 880,
+    // Frase 2
+    Sound_play(587, 450);  // RE5 (con puntillo)
+    Sound_play(698, 150);  // FA5
+    Sound_play(880, 300);  // LA5
+    Sound_play(784, 150);  // SOL5
+    Sound_play(698, 150);  // FA5
 
-        932, 932, 932, 932, 932, 1047,
-        932, 932, 880, 880, 1047, 698,
+    Sound_play(659, 450);  // MI5 (con puntillo)
+    Sound_play(523, 150);  // DO5
+    Sound_play(659, 300);  // MI5
+    Sound_play(587, 150);  // RE5
+    Sound_play(523, 150);  // DO5
 
-        784, 784, 784, 784, 784,
-        880, 932, 880, 880,
+    Sound_play(494, 300);  // SI4
+    Sound_play(494, 150);  // SI4
+    Sound_play(523, 150);  // DO5
+    Sound_play(587, 300);  // RE5
+    Sound_play(659, 300);  // MI5
 
-        1175, 988, 880, 1175, 988, 880, 1175, 988, 880,
-        988, 880, 740, 698, 740, 988, 1109, 1175,
-        1175, 1175, 1109, 988, 880,
+    Sound_play(523, 300);  // DO5
+    Sound_play(440, 300);  // LA4
+    Sound_play(440, 600);  // LA4
 
-        1175, 988, 880, 1175, 988, 880, 1175, 988, 880,
-        988, 880, 740, 698, 740, 988, 1109, 1175,
-        1175, 1175, 1319, 1175
-    };
+    // Puente
+    Sound_play(587, 600);  // RE5
+    Sound_play(698, 300);  // FA5
+    Sound_play(880, 600);  // LA5
+    Sound_play(784, 300);  // SOL5
+    Sound_play(698, 300);  // FA5
 
-    uint32_t numero_notas = sizeof(melodia) / sizeof(melodia[0]);
+    Sound_play(659, 450);  // MI5
+    Sound_play(523, 150);  // DO5
+    Sound_play(659, 600);  // MI5
+    Sound_play(587, 300);  // RE5
 
-    for(uint32_t i = 0; i < numero_notas; i++)
-    {
-        Sound_play(melodia[i], duracion);
-    }
+    Sound_play(523, 300);  // DO5
+    Sound_play(494, 300);  // SI4
+
+    Sound_play(523, 300);  // DO5
+    Sound_play(587, 300);  // RE5
+    Sound_play(659, 600);  // MI5
+
+    Sound_play(523, 600);  // DO5
+    Sound_play(440, 600);  // LA4
+    Sound_play(440, 600);  // LA4
 }
 
 void cielitolindo()
@@ -229,6 +259,7 @@ void patron1()
     HAL_GPIO_TogglePin(GPIOB, LED4_Pin);
     HAL_Delay(100);
 }
+
 
 void patron2()
 {
@@ -351,14 +382,14 @@ int main(void)
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  patron3(5);
-  HAL_Delay(500);
-  patron4(350, 5);
 
   while (1)
   {
     /* USER CODE END WHILE */
-    suero(1000);
+
+    tetris();
+
+    /*suero(1000);
     fail();
     patron1();
     HAL_Delay(500);
@@ -366,7 +397,7 @@ int main(void)
     HAL_Delay(500);
     cielitolindo();
     HAL_Delay(500);
-    epona();
+    epona();*/
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
