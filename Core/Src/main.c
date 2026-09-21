@@ -18,11 +18,13 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "stm32f4xx_hal.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "leds.h"
+#include "melodias.h"
+#include "segmentos.h"
+#include "lcd.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -43,7 +45,6 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint32_t pasos=0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -56,296 +57,6 @@ static void MX_GPIO_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-void delay_us_dwt_init()
-{
-	CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
-    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
-    pasos=(HAL_RCC_GetSysClockFreq()/1000000);//le el cristal pasa a us
-
-}
-
-//retardo por debbuger
-void delay_us_dwt(uint32_t reta)
-{
-
-DWT->CYCCNT=0;
-while( DWT->CYCCNT<=pasos*reta);//multiplica por us
-}
-
-void Sound_play(uint32_t frec,uint32_t dura)
-{
-	uint32_t dela=500000/frec;//  la mitad de un mega
-	uint32_t  repe=frec*dura/1000;// calcula cuantas veces se repite
-
-		while(repe--)
-	  {
-	HAL_GPIO_WritePin(PAR_GPIO_Port, PAR_Pin,1);
-	delay_us_dwt(dela);
-	  HAL_GPIO_WritePin(PAR_GPIO_Port, PAR_Pin,0);
-	  delay_us_dwt(dela);
-      }
-
-}
-
-void tetris()
-{
-    // Frase 1
-    Sound_play(659, 300);  // MI5
-    Sound_play(494, 150);  // SI4
-    Sound_play(523, 150);  // DO5
-    Sound_play(587, 300);  // RE5
-    Sound_play(523, 150);  // DO5
-    Sound_play(494, 150);  // SI4
-
-    Sound_play(440, 300);  // LA4
-    Sound_play(440, 150);  // LA4
-    Sound_play(523, 150);  // DO5
-    Sound_play(659, 300);  // MI5
-    Sound_play(587, 150);  // RE5
-    Sound_play(523, 150);  // DO5
-
-    Sound_play(494, 300);  // SI4
-    Sound_play(523, 150);  // DO5
-    Sound_play(587, 300);  // RE5
-    Sound_play(659, 300);  // MI5
-
-    Sound_play(523, 300);  // DO5
-    Sound_play(440, 300);  // LA4
-    Sound_play(440, 600);  // LA4
-
-    // Frase 2
-    Sound_play(587, 450);  // RE5 (con puntillo)
-    Sound_play(698, 150);  // FA5
-    Sound_play(880, 300);  // LA5
-    Sound_play(784, 150);  // SOL5
-    Sound_play(698, 150);  // FA5
-
-    Sound_play(659, 450);  // MI5 (con puntillo)
-    Sound_play(523, 150);  // DO5
-    Sound_play(659, 300);  // MI5
-    Sound_play(587, 150);  // RE5
-    Sound_play(523, 150);  // DO5
-
-    Sound_play(494, 300);  // SI4
-    Sound_play(494, 150);  // SI4
-    Sound_play(523, 150);  // DO5
-    Sound_play(587, 300);  // RE5
-    Sound_play(659, 300);  // MI5
-
-    Sound_play(523, 300);  // DO5
-    Sound_play(440, 300);  // LA4
-    Sound_play(440, 600);  // LA4
-
-    // Puente
-    Sound_play(587, 600);  // RE5
-    Sound_play(698, 300);  // FA5
-    Sound_play(880, 600);  // LA5
-    Sound_play(784, 300);  // SOL5
-    Sound_play(698, 300);  // FA5
-
-    Sound_play(659, 450);  // MI5
-    Sound_play(523, 150);  // DO5
-    Sound_play(659, 600);  // MI5
-    Sound_play(587, 300);  // RE5
-
-    Sound_play(523, 300);  // DO5
-    Sound_play(494, 300);  // SI4
-
-    Sound_play(523, 300);  // DO5
-    Sound_play(587, 300);  // RE5
-    Sound_play(659, 600);  // MI5
-
-    Sound_play(523, 600);  // DO5
-    Sound_play(440, 600);  // LA4
-    Sound_play(440, 600);  // LA4
-}
-
-void cielitolindo()
-{
-    // De la Sierra Morena
-    Sound_play(523, 350);   // DO5
-    Sound_play(523, 250);   // DO5
-    Sound_play(440, 250);   // LA4
-    Sound_play(494, 250);   // SI4
-    Sound_play(392, 400);   // SOL4
-
-
-    // Cielito lindo vienen bajando
-    Sound_play(523, 250);   // DO5
-    Sound_play(523, 250);   // DO5
-    Sound_play(440, 250);   // LA4
-    Sound_play(494, 250);   // SI4
-    Sound_play(392, 500);   // SOL4
-
-
-    // Un par de ojitos negros
-    Sound_play(523, 250);   // DO5
-    Sound_play(523, 250);   // DO5
-    Sound_play(440, 350);   // LA4
-    Sound_play(494, 250);   // SI4
-    Sound_play(392, 250);   // SOL4
-    Sound_play(349, 250);   // FA4
-    Sound_play(294, 500);   // RE4
-
-
-    // Cielito lindo de contrabando
-    Sound_play(494, 250);   // SI4
-    Sound_play(494, 250);   // SI4
-    Sound_play(494, 250);   // SI4
-    Sound_play(494, 250);   // SI4
-    Sound_play(440, 250);   // LA4
-    Sound_play(349, 250);   // FA4
-    Sound_play(294, 250);   // RE4
-    Sound_play(294, 250);   // RE4
-    Sound_play(330, 250);   // MI4
-
-    Sound_play(349, 250);   // FA4
-    Sound_play(392, 250);   // SOL4
-    Sound_play(392, 250);   // SOL4
-    Sound_play(392, 250);   // SOL4
-    Sound_play(349, 250);   // FA4
-    Sound_play(330, 250);   // MI4
-    Sound_play(294, 250);   // RE4
-    Sound_play(262, 600);   // DO4
-
-
-    // ¡Ay, ay, ay, ay!
-    Sound_play(659, 500);   // MI5
-    Sound_play(587, 300);   // RE5
-    Sound_play(523, 250);   // DO5
-    Sound_play(440, 600);   // LA4
-
-
-    // Canta y no llores
-    Sound_play(587, 350);   // RE5
-    Sound_play(587, 200);   // RE5
-    Sound_play(523, 200);   // DO5
-    Sound_play(659, 300);   // MI5
-    Sound_play(523, 500);   // DO5
-
-
-    // Porque cantando se alegran
-    Sound_play(392, 250);   // SOL4
-    Sound_play(440, 300);   // LA4
-    Sound_play(392, 250);   // SOL4
-    Sound_play(440, 250);   // LA4
-    Sound_play(440, 250);   // LA4
-    Sound_play(392, 250);   // SOL4
-    Sound_play(698, 300);   // FA5
-    Sound_play(698, 300);   // FA5
-
-
-    // Cielito lindo, los corazones
-    Sound_play(587, 350);   // RE5
-    Sound_play(494, 250);   // SI4
-    Sound_play(392, 250);   // SOL4
-    Sound_play(440, 300);   // LA4
-    Sound_play(440, 250);   // LA4
-    Sound_play(392, 250);   // SOL4
-    Sound_play(349, 250);   // FA4
-    Sound_play(330, 250);   // MI4
-    Sound_play(294, 250);   // RE4
-    Sound_play(262, 600);   // DO4
-}
-
-void patron1()
-{
-    HAL_GPIO_TogglePin(GPIOB, LED1_Pin);
-    HAL_Delay(100);
-    HAL_GPIO_TogglePin(GPIOB, LED2_Pin);
-    HAL_Delay(100);
-    HAL_GPIO_TogglePin(GPIOB, LED3_Pin);
-    HAL_Delay(100);
-    HAL_GPIO_TogglePin(GPIOB, LED4_Pin);
-    HAL_Delay(100);
-}
-
-
-void patron2()
-{
-    HAL_GPIO_TogglePin(GPIOB, LED4_Pin);
-    HAL_Delay(100);
-    HAL_GPIO_TogglePin(GPIOB, LED3_Pin);
-    HAL_Delay(100);
-    HAL_GPIO_TogglePin(GPIOB, LED2_Pin);
-    HAL_Delay(100);
-    HAL_GPIO_TogglePin(GPIOB, LED1_Pin);
-    HAL_Delay(100);
-}
-
- void patron3(int repeticiones)
-{
-    int contador = 0;
-
-    while (contador < repeticiones)
-    {
-        HAL_Delay(500);
-        HAL_GPIO_TogglePin(GPIOB, LED2_Pin);
-        HAL_Delay(500);
-
-        HAL_GPIO_TogglePin(GPIOB, LED4_Pin);
-        HAL_Delay(500);
-
-        HAL_GPIO_TogglePin(GPIOB, LED3_Pin);
-        HAL_Delay(500);
-
-        HAL_GPIO_TogglePin(GPIOB, LED1_Pin);
-        HAL_Delay(500);
-
-        contador++;
-    }
-}
-
- void patron4(int velocidad, int repeticiones)
-  {
-    for (int i = 0; i < repeticiones; i++)
-    {
-        HAL_Delay(500);
-        HAL_GPIO_WritePin(GPIOB, LED4_Pin, GPIO_PIN_SET);
-        HAL_Delay(velocidad);
-        HAL_GPIO_WritePin(GPIOB, LED4_Pin, GPIO_PIN_RESET);
-
-        HAL_GPIO_WritePin(GPIOB, LED2_Pin, GPIO_PIN_SET);
-        HAL_Delay(velocidad);
-        HAL_GPIO_WritePin(GPIOB, LED2_Pin, GPIO_PIN_RESET);
-
-        HAL_GPIO_WritePin(GPIOB, LED3_Pin, GPIO_PIN_SET);
-        HAL_Delay(velocidad);
-        HAL_GPIO_WritePin(GPIOB, LED3_Pin, GPIO_PIN_RESET);
-
-        HAL_GPIO_WritePin(GPIOB, LED1_Pin, GPIO_PIN_SET);
-        HAL_Delay(velocidad);
-        HAL_GPIO_WritePin(GPIOB, LED1_Pin, GPIO_PIN_RESET);
-    }
-  }
-
-void suero(uint16_t t)
-{
-  GPIOA->ODR = 0b10010010;
-  HAL_Delay(t);
-  GPIOA->ODR = 0b11000001;
-  HAL_Delay(t);
-  GPIOA->ODR = 0b10000110;
-  HAL_Delay(t);
-  GPIOA->ODR = 0b10101111;
-  HAL_Delay(t);
-  GPIOA->ODR = 0b11000000;
-  HAL_Delay(t);
-}
-
-void fail()
-{
-  
-  GPIOA->ODR = 0x8E;
-  HAL_Delay(500);
-  GPIOA->ODR = 136;
-  HAL_Delay(500);
-  GPIOA->ODR = 0b11111001;
-  HAL_Delay(500);
-  GPIOA->ODR = 199;
-  HAL_Delay(500);
-}
-
 /* USER CODE END 0 */
 
 /**
@@ -356,7 +67,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-  delay_us_dwt_init();
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -378,26 +89,24 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-
+  GPIOA->ODR = 0b11111111;
+  delay_us_dwt_init();
+  Lcd_Init();
+  Lcd_Cmd(_LCD_CLEAR);
+  Lcd_Cmd(_LCD_CURSOR_OFF);
+  Lcd_Text(1,1,"Estamos");
+  Lcd_Text(2,1,"Neutros");
   /* USER CODE END 2 */
+
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
   while (1)
   {
+
     /* USER CODE END WHILE */
 
-    tetris();
-
-    /*suero(1000);
-    fail();
-    patron1();
-    HAL_Delay(500);
-    patron2();
-    HAL_Delay(500);
-    cielitolindo();
-    HAL_Delay(500);
-    epona();*/
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -466,7 +175,8 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, PAR_Pin|LED1_Pin|LED2_Pin|LED3_Pin
-                          |LED4_Pin, GPIO_PIN_RESET);
+                          |LED4_Pin|LCD_D4_Pin|LCD_D5_Pin|LCD_D6_Pin
+                          |LCD_D7_Pin|LCD_RS_Pin|LCD_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : DPA_Pin DPB_Pin DPC_Pin DPD_Pin
                            DPE_Pin DPF_Pin DPG_Pin */
@@ -478,9 +188,11 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PAR_Pin LED1_Pin LED2_Pin LED3_Pin
-                           LED4_Pin */
+                           LED4_Pin LCD_D4_Pin LCD_D5_Pin LCD_D6_Pin
+                           LCD_D7_Pin LCD_RS_Pin LCD_EN_Pin */
   GPIO_InitStruct.Pin = PAR_Pin|LED1_Pin|LED2_Pin|LED3_Pin
-                          |LED4_Pin;
+                          |LED4_Pin|LCD_D4_Pin|LCD_D5_Pin|LCD_D6_Pin
+                          |LCD_D7_Pin|LCD_RS_Pin|LCD_EN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
